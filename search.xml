@@ -8,7 +8,7 @@
       <link href="/2021/12/15/new-test/"/>
       <url>/2021/12/15/new-test/</url>
       
-        <content type="html"><![CDATA[<p><strong>what you say</strong></p>]]></content>
+        <content type="html"><![CDATA[<p><strong>what you say</strong></p><head>  <script src="//cdn.jsdelivr.net/npm/@waline/client"></script></head><body>  <div id="waline"></div>  <script>    Waline({      el: '#waline',      serverURL: 'https://waline-1w3mc5o2w-xianhe-zhang.vercel.app',    });  </script></body>]]></content>
       
       
       
