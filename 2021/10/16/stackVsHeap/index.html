@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Stack VS Heap | Xianhe's Blog</title><meta name="keywords" content="Basics,Operation System"><meta name="author" content="Mario(Xianhe) Zhang"><meta name="copyright" content="Mario(Xianhe) Zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Q:  Why there are stack and heap?  What is the difference? A:  Before talking about the diff, we first think about WHY.  WHY Software design perspective The stack represents the processing logic, whil">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stack VS Heap">
+<meta property="og:url" content="http://www.mariobar.com/2021/10/16/stackVsHeap/index.html">
+<meta property="og:site_name" content="Xianhe&#39;s Blog">
+<meta property="og:description" content="Q:  Why there are stack and heap?  What is the difference? A:  Before talking about the diff, we first think about WHY.  WHY Software design perspective The stack represents the processing logic, whil">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://www.mariobar.com/img/ghost.png">
+<meta property="article:published_time" content="2021-10-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-28T16:00:00.000Z">
+<meta property="article:author" content="Mario(Xianhe) Zhang">
+<meta property="article:tag" content="Basics">
+<meta property="article:tag" content="Operation System">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.mariobar.com/img/ghost.png"><link rel="shortcut icon" href="/img/mario.png"><link rel="canonical" href="http://www.mariobar.com/2021/10/16/stackVsHeap/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Stack VS Heap',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-29 00:00:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/tx.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">7</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">6</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> HOME</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> TAG</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> CATEGORY</span></a></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-list"></i><span> PROJECT</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> ABOUT</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/ghost.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Xianhe's Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> HOME</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> TAG</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> CATEGORY</span></a></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-list"></i><span> PROJECT</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> ABOUT</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Stack VS Heap</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-10-16T16:00:00.000Z" title="Created 2021-10-17 00:00:00">2021-10-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-12-28T16:00:00.000Z" title="Updated 2021-12-29 00:00:00">2021-12-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E6%89%AB%E7%9B%B2/">学习扫盲</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Stack VS Heap"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="font-size-5-Q-Why-there-are-stack-and-heap-What-is-the-difference-font-font-size-5-A-Before-talking-about-the-diff-we-first-think-about-WHY-font"><strong><font size = 5>Q:  Why there are stack and heap?  What is the difference?</font></strong><br>
+<strong><font size = 5>A:  Before talking about the diff, we first think about WHY. </font></strong></h2>
+<h1>WHY</h1>
+<h2 id="Software-design-perspective">Software design perspective</h2>
+<p>The stack represents the processing logic, while the heap represents the data. This separation makes the processing logic clearer. The idea of divide-and-conquer. This idea of isolation and modularity is reflected in all aspects of software design.</p>
+<h2 id="The-heap-can-be-shared-by-stacks">The heap can be shared by stacks</h2>
+<p>The separation of the heap from the stack allows the contents of the heap to be shared by multiple stacks(which can also be interpreted as multiple threads accessing the same object). The benefits of this sharing are many. On the one hand this sharing provides an efficient way to interact with data (e.g., shared memory), and on the other hand, the shared constants and caches in the heap can be accessed by all stacks, saving space.</p>
+<h2 id="Stack’s-needs">Stack’s needs</h2>
+<p>Stack’s ruuning requires address segments such as keeping the context. Since the stack can only grow upward, it limits the stack’s ability to store content. Unlike the heap, the objects in the heap can grow dynamically as needed, so the split between the stack and the heap makes dynamic growth possible, and the corresponding stack only needs to record an address in the heap.</p>
+<h2 id="Object-Oriented-is-the-peferct-outcome-of-combination-of-heap-and-stack">Object-Oriented is the peferct outcome of combination of heap and stack</h2>
+<p>In fact, OOP has no difference in running with previous structured programming. However, the introduction of object-oriented makes the way of thinking about problems change, and closer to the natural way of thinking. When we take the object apart, you find that the properties of the object are actually the data, stored in the heap; and the behavior of the object (methods), which is the runtime logic, is placed on the stack. When we write the object, we actually write the data structure, but also write the logic to handle the data.</p>
+<div class="note info simple"><p>In Java, the Main function is the starting point of the stack, and the starting point of the program There is always a starting point for a program to run. No matter what java program, Main is the entrance to the execution of the program :)</p>
+</div>
+<h1>What is stored in Stack and Heap?</h1>
+<p>The heap holds objects. The stack holds basic data types and references to  objects in the heap. The size of an object is not estimable, or can change dynamically, but in the stack, an object corresponds to only one 4btye reference.</p>
+<h2 id="Why-not-put-the-basic-type-in-the-heap">Why not put the basic type in the heap?</h2>
+<p>Because the space it occupies is generally 1 to 8 bytes - need less space, and because it is a basic type, so there will be no dynamic growth - the length is fixed, so the stack storage is enough, if he exists in the heap is not much sense There is no point in storing it in the heap (and wasting space, as explained later). So to speak, basic types and object references are stored on the stack, and both are a few bytes of a number, so at program runtime, they are handled in a uniform way. But basic types, object references and objects themselves are different, because one is the data on the stack and one is the data in the heap.</p>
+<h1>Comment</h1>
+<p>Personally think the seperation of stack and heap actually stands the beauty of design thoughts.</p>
+<hr>
+<h1>堆栈为什么要分离？ （转载自Useful Link）</h1>
+<ol>
+<li>从软件设计的角度看，栈代表了处理逻辑，而堆代表了数据。这样分开，使得处理逻辑更为清晰。分而治之的思想。这种隔离、模块化的思想在软件设计的方方面面都有体现。</li>
+<li>堆与栈的分离，使得堆中的内容可以被多个栈共享（也可以理解为多个线程访问同一个对象）。这种共享的收益是很多的。一方面这种共享提供了一种有效的数据交互方式(如：共享内存)，另一方面，堆中的共享常量和缓存可以被所有栈访问，节省了空间。</li>
+<li>栈因为运行时的需要，比如保存系统运行的上下文，需要进行地址段的划分。由于栈只能向上增长，因此就会限制住栈存储内容的能力。而堆不同，堆中的对象是可以根据需要动态增长的，因此栈和堆的拆分，使得动态增长成为可能，相应栈中只需记录堆中的一个地址即可。</li>
+<li>面向对象就是堆和栈的完美结合。其实，面向对象方式的程序与以前结构化的程序在执行上没有任何区别。但是，面向对象的引入，使得对待问题的思考方式发生了改变，而更接近于自然方式的思考。当我们把对象拆开，你会发现，对象的属性其实就是数据，存放在堆中；而对象的行为（方法），就是运行逻辑，放在栈中。我们在编写对象的时候，其实即编写了数据结构，也编写的处理数据的逻辑。不得不承认，面向对象的设计，确实很美。</li>
+</ol>
+<h1>堆和栈里面储存了什么？</h1>
+<p>堆中存的是对象。栈中存的是基本数据类型和堆中对象的引用。一个对象的大小是不可估计的，或者说是可以动态变化的，但是在栈中，一个对象只对应了一个4btye的引用。</p>
+<h2 id="为什么不把基本类型放堆中呢？">为什么不把基本类型放堆中呢？</h2>
+<p>因为其占用的空间一般是1~8个字节——需要空间比较少，而且因为是基本类型，所以不会出现动态增长的情况——长度固定，因此栈中存储就够了，如果把他存在堆中是没有什么意义的（还会浪费空间，后面说明）。可以这么说，基本类型和对象的引用都是存放在栈中，而且都是几个字节的一个数，因此在程序运行时，他们的处理方式是统一的。但是基本类型、对象引用和对象本身就有所区别了，因为一个是栈中的数据一个是堆中的数据。</p>
+<h1>Userful Link</h1>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/andy-zhou/p/5327288.html">Click Me -&gt; JVM调优</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Mario(Xianhe) Zhang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://www.mariobar.com/2021/10/16/stackVsHeap/">http://www.mariobar.com/2021/10/16/stackVsHeap/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Basics/">Basics</a><a class="post-meta__tags" href="/tags/Operation-System/">Operation System</a></div><div class="post_share"><div class="social-share" data-image="/img/ghost.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/12/01/introToWebpack/"><img class="prev-cover" src="/img/gallery/hallow.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Why we need Webpack? | Webpack是用来干什么的？打包？</div></div></a></div><div class="next-post pull-right"><a href="/2021/09/16/http-https/"><img class="next-cover" src="/img/ds.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">HTTP &amp; HTTPS</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/09/04/introToAsync/" title="Why asynchronous and its application scenarios｜为什么需要异步与其场景"><img class="cover" src="/img/nw.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-05</div><div class="title">Why asynchronous and its application scenarios｜为什么需要异步与其场景</div></div></a></div><div><a href="/2021/12/01/introToWebpack/" title="Why we need Webpack? | Webpack是用来干什么的？打包？"><img class="cover" src="/img/gallery/hallow.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-02</div><div class="title">Why we need Webpack? | Webpack是用来干什么的？打包？</div></div></a></div><div><a href="/2021/07/04/letVarConst/" title="Let, Var & Const"><img class="cover" src="/img/js.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-05</div><div class="title">Let, Var & Const</div></div></a></div><div><a href="/2021/09/16/http-https/" title="HTTP & HTTPS"><img class="cover" src="/img/ds.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-17</div><div class="title">HTTP & HTTPS</div></div></a></div><div><a href="/2022/01/04/sortAlgo/" title="Sorting Algorithm | 排序算法(Python)"><img class="cover" src="/img/qin.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-05</div><div class="title">Sorting Algorithm | 排序算法(Python)</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/tx.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Mario(Xianhe) Zhang</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">7</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">6</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xianhe-zhang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xianhe-zhang" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zhang.xianh@northeastern.edu" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Welcome to my blog! Enjoy this bar!</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#font-size-5-Q-Why-there-are-stack-and-heap-What-is-the-difference-font-font-size-5-A-Before-talking-about-the-diff-we-first-think-about-WHY-font"><span class="toc-number">1.</span> <span class="toc-text">Q:  Why there are stack and heap?  What is the difference?
+
+A:  Before talking about the diff, we first think about WHY. </span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number"></span> <span class="toc-text">WHY</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Software-design-perspective"><span class="toc-number">1.</span> <span class="toc-text">Software design perspective</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-heap-can-be-shared-by-stacks"><span class="toc-number">2.</span> <span class="toc-text">The heap can be shared by stacks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stack%E2%80%99s-needs"><span class="toc-number">3.</span> <span class="toc-text">Stack’s needs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Object-Oriented-is-the-peferct-outcome-of-combination-of-heap-and-stack"><span class="toc-number">4.</span> <span class="toc-text">Object-Oriented is the peferct outcome of combination of heap and stack</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number"></span> <span class="toc-text">What is stored in Stack and Heap?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-not-put-the-basic-type-in-the-heap"><span class="toc-number">1.</span> <span class="toc-text">Why not put the basic type in the heap?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number"></span> <span class="toc-text">Comment</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number"></span> <span class="toc-text">堆栈为什么要分离？ （转载自Useful Link）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number"></span> <span class="toc-text">堆和栈里面储存了什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%8A%8A%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E6%94%BE%E5%A0%86%E4%B8%AD%E5%91%A2%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">为什么不把基本类型放堆中呢？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number"></span> <span class="toc-text">Userful Link</span></a></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/01/26/DpBag/" title="Knapsack problem(Dynamic Programming) ｜ 背包问题汇总"><img src="/img/aier.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Knapsack problem(Dynamic Programming) ｜ 背包问题汇总"/></a><div class="content"><a class="title" href="/2022/01/26/DpBag/" title="Knapsack problem(Dynamic Programming) ｜ 背包问题汇总">Knapsack problem(Dynamic Programming) ｜ 背包问题汇总</a><time datetime="2022-01-26T16:00:00.000Z" title="Created 2022-01-27 00:00:00">2022-01-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/04/sortAlgo/" title="Sorting Algorithm | 排序算法(Python)"><img src="/img/qin.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Sorting Algorithm | 排序算法(Python)"/></a><div class="content"><a class="title" href="/2022/01/04/sortAlgo/" title="Sorting Algorithm | 排序算法(Python)">Sorting Algorithm | 排序算法(Python)</a><time datetime="2022-01-04T16:00:00.000Z" title="Created 2022-01-05 00:00:00">2022-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/01/introToWebpack/" title="Why we need Webpack? | Webpack是用来干什么的？打包？"><img src="/img/gallery/hallow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Why we need Webpack? | Webpack是用来干什么的？打包？"/></a><div class="content"><a class="title" href="/2021/12/01/introToWebpack/" title="Why we need Webpack? | Webpack是用来干什么的？打包？">Why we need Webpack? | Webpack是用来干什么的？打包？</a><time datetime="2021-12-01T16:00:00.000Z" title="Created 2021-12-02 00:00:00">2021-12-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/10/16/stackVsHeap/" title="Stack VS Heap"><img src="/img/ghost.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Stack VS Heap"/></a><div class="content"><a class="title" href="/2021/10/16/stackVsHeap/" title="Stack VS Heap">Stack VS Heap</a><time datetime="2021-10-16T16:00:00.000Z" title="Created 2021-10-17 00:00:00">2021-10-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/09/16/http-https/" title="HTTP &amp; HTTPS"><img src="/img/ds.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="HTTP &amp; HTTPS"/></a><div class="content"><a class="title" href="/2021/09/16/http-https/" title="HTTP &amp; HTTPS">HTTP &amp; HTTPS</a><time datetime="2021-09-16T16:00:00.000Z" title="Created 2021-09-17 00:00:00">2021-09-17</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/ghost.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Mario(Xianhe) Zhang</div><div class="footer_custom_text">Hi There! Welcome to My <a href="http://www.mariobar.com">Blog</a>!<br /><a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/">豫ICP备2022003401号-1</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = new Waline(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://waline-1w3mc5o2w-xianhe-zhang.vercel.app/',
+      path: location.pathname,
+      visitor: false,
+      dark: 'html[data-theme="dark"]'
+    }, null))
+  }
+
+  if (typeof Waline === 'function') initWaline()
+  else getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js').then(initWaline)
+}
+
+if ('Waline' === 'Waline' || !true) {
+  if (true) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
